@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="About Harpuneet Singh — independent front-end developer and creative technologist."
+    />
+    <title>About — Harpuneet Singh</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="field-notes/styles.css" />
+    <style>
+      .about-hero {
+        min-height: 92vh;
+        display: flex;
+        flex-direction: column;
+        padding: 3rem var(--pad) 4rem;
+        border-bottom: 1px solid var(--ink);
+        background: var(--ink);
+        color: var(--paper);
+      }
+      .about-hero__meta {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.65rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+      .about-hero h1 {
+        margin: auto 0 0;
+        font-size: clamp(4rem, 13.5vw, 14rem);
+        font-weight: 900;
+        letter-spacing: -0.09em;
+        line-height: 0.78;
+      }
+      .about-hero h1 em { color: var(--blue); font-style: normal; }
+      .about-hero__footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+        gap: 2rem;
+        margin-top: 8vh;
+        font-size: 0.7rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .about-hero__footer p { max-width: 24rem; line-height: 1.5; }
+      .facts {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        border-bottom: 1px solid var(--ink);
+      }
+      .facts div {
+        padding: 2.5rem var(--pad);
+        border-right: 1px solid var(--ink);
+      }
+      .facts div:last-child { border-right: 0; }
+      .facts span {
+        display: block;
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--grey);
+      }
+      .facts strong {
+        display: block;
+        margin-top: 1rem;
+        font-size: clamp(1.1rem, 1.8vw, 1.6rem);
+        letter-spacing: -0.03em;
+      }
+      .about-cta {
+        display: block;
+        padding: 6rem var(--pad);
+        background: var(--blue);
+        color: white;
+      }
+      .about-cta span { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; }
+      .about-cta strong {
+        display: block;
+        margin-top: 1.5rem;
+        font-size: clamp(2.5rem, 7vw, 7rem);
+        font-weight: 900;
+        letter-spacing: -0.07em;
+        line-height: 0.9;
+      }
+      .about-cta:hover strong { color: var(--ink); }
+      @media (max-width: 760px) {
+        .about-hero { min-height: 80svh; }
+        .about-hero__footer { flex-direction: column; align-items: flex-start; }
+        .facts { grid-template-columns: 1fr; }
+        .facts div { border-right: 0; border-bottom: 1px solid var(--ink); }
+        .facts div:last-child { border-bottom: 0; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress" aria-hidden="true"></div>
+    <header class="site-header">
+      <a class="site-header__brand" href="index.html">HS®</a>
+      <span>About / The person behind the pixels</span>
+      <a class="site-header__back" href="index.html">Back to portfolio ↙</a>
+    </header>
+
+    <main>
+      <header class="about-hero">
+        <div class="about-hero__meta">
+          <span>Harpuneet Singh</span>
+          <span>Independent / Worldwide</span>
+        </div>
+        <h1>DESIGNER<br />WHO CODES.<br /><em>CODER</em> WHO<br />DESIGNS.</h1>
+        <div class="about-hero__footer">
+          <p>
+            Front-end developer and creative technologist building expressive digital experiences
+            where clarity, motion, and math meet.
+          </p>
+          <span>Scroll ↓</span>
+        </div>
+      </header>
+
+      <div class="facts">
+        <div>
+          <span>Currently</span>
+          <strong>Independent practice, open to select collaborations</strong>
+        </div>
+        <div>
+          <span>Focus</span>
+          <strong>Interactive graphics, physics, procedural audio, typography</strong>
+        </div>
+        <div>
+          <span>Stack</span>
+          <strong>JavaScript, WebGL, Three.js, GSAP, Web Audio, Blender</strong>
+        </div>
+      </div>
+
+      <div class="article-layout">
+        <nav class="toc" aria-label="Page contents">
+          <span>Contents</span>
+          <a href="#story">01 / The story</a>
+          <a href="#how">02 / How I work</a>
+          <a href="#beyond">03 / Beyond the screen</a>
+        </nav>
+
+        <article class="prose">
+          <p class="lead">
+            I turn ideas into interfaces, interfaces into motion, and motion into meaning.
+          </p>
+
+          <section id="story">
+            <h2>The story</h2>
+            <p>
+              I started the way a lot of creative developers do: taking things apart to see how they
+              worked, then rebuilding them slightly stranger than before. Somewhere between my first
+              canvas experiment and my first shader, I realized the browser wasn't just a document
+              viewer—it was an instrument.
+            </p>
+            <p>
+              Since then, my work has lived at the intersection of design and engineering. I build
+              fluid simulations that respond to a cursor like water responds to a hand. I give
+              typography mass, velocity, and the ability to shatter. I synthesize sound from
+              movement so interfaces don't just look alive—they sound alive.
+            </p>
+            <p>
+              I work independently by choice. It keeps me close to every decision, from the first
+              strategic question to the final easing curve.
+            </p>
+          </section>
+
+          <section id="how">
+            <h2>How I work</h2>
+            <p>
+              Every project starts with a question worth answering, not a deliverable worth
+              invoicing. I prototype early and often, because the prototype is the strategy: a
+              working sketch reveals more in an afternoon than a deck reveals in a month.
+            </p>
+            <p>
+              I care about the details people feel rather than see—the damping on a spring, the
+              dissipation of a fluid field, the two milliseconds of attack on a gain envelope.
+              Those decisions are where an interface stops feeling authored and starts feeling
+              inevitable.
+            </p>
+            <div class="callout">
+              <p>Clarity is not the absence of complexity. It is complexity, resolved.</p>
+            </div>
+          </section>
+
+          <section id="beyond">
+            <h2>Beyond the screen</h2>
+            <p>
+              When I'm not shipping interfaces, I'm usually in Blender sculpting procedural
+              materials, writing field notes about the math behind my projects, or chasing whatever
+              rabbit hole currently has my attention. Curiosity is the only metric I track
+              obsessively.
+            </p>
+            <p>
+              If you have an idea with a pulse—something that deserves more than a template—I'd
+              like to hear about it.
+            </p>
+          </section>
+        </article>
+      </div>
+    </main>
+
+    <a class="about-cta" href="index.html#contact">
+      <span>Next step</span>
+      <strong>Have an idea with a pulse? →</strong>
+    </a>
+  </body>
+</html>

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Field Notes by Harpuneet Singh—practical writing on graphics, physics, sound, and creative development."
+    />
+    <title>Field Notes — Harpuneet Singh</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      .notes-index { min-height: 100vh; padding: 3rem var(--pad) 8rem; }
+      .notes-index__meta { display: flex; justify-content: space-between; font-size: .65rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+      .notes-index h1 { margin: 15vh 0 10vh; font-size: clamp(5rem, 15vw, 15rem); font-weight: 900; letter-spacing: -.09em; line-height: .72; }
+      .notes-list { border-top: 1px solid var(--ink); }
+      .notes-list a { display: grid; grid-template-columns: 4rem 1fr auto; gap: 2rem; align-items: start; padding: 2rem 0; border-bottom: 1px solid var(--ink); transition: padding .35s, background .35s, color .35s; }
+      .notes-list a:hover { padding-right: 1rem; padding-left: 1rem; background: var(--blue); color: white; }
+      .notes-list span { font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; }
+      .notes-list strong { max-width: 18ch; font-size: clamp(1.8rem, 4vw, 4rem); letter-spacing: -.06em; line-height: .95; }
+      @media (max-width: 700px) {
+        .notes-index h1 { margin-top: 12vh; }
+        .notes-list a { grid-template-columns: 2rem 1fr; }
+        .notes-list a > span:last-child { display: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="site-header__brand" href="../index.html">HS®</a>
+      <span>Writing / Ideas / Process</span>
+      <a class="site-header__back" href="../index.html#field-notes">Back to portfolio ↙</a>
+    </header>
+    <main class="notes-index">
+      <div class="notes-index__meta">
+        <span>Field Notes / 2026</span>
+        <span>03 entries</span>
+      </div>
+      <h1>READ.<br />THINK.<br />MAKE.</h1>
+      <div class="notes-list">
+        <a href="navier-stokes-fragment-shader.html">
+          <span>01</span>
+          <strong>Solving Navier–Stokes equations in a fragment shader</strong>
+          <span>Essay / 12 min ↗</span>
+        </a>
+        <a href="rigid-body-interfaces.html">
+          <span>02</span>
+          <strong>Designing tactile interfaces with rigid-body physics</strong>
+          <span>Process / 10 min ↗</span>
+        </a>
+        <a href="procedural-audio-web.html">
+          <span>03</span>
+          <strong>The math behind procedural audio on the web</strong>
+          <span>Opinion / 11 min ↗</span>
+        </a>
+      </div>
+    </main>
+  </body>
+</html>

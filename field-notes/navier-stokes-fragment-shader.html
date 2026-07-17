@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="How AETHER turns incompressible fluid equations into a real-time WebGL rendering pipeline."
+    />
+    <title>Solving Navier–Stokes in a Fragment Shader — Harpuneet Singh</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="progress" aria-hidden="true"></div>
+    <header class="site-header">
+      <a class="site-header__brand" href="../index.html">HS®</a>
+      <span>Field Notes / 01</span>
+      <a class="site-header__back" href="../index.html#field-notes">Back to portfolio ↙</a>
+    </header>
+
+    <main>
+      <header class="article-hero">
+        <div class="article-hero__meta">
+          <span>Essay / WebGL / 12 min</span>
+          <span>Published 2026</span>
+        </div>
+        <h1>Solving Navier–Stokes equations in a fragment shader</h1>
+        <div class="article-hero__footer">
+          <p class="article-hero__dek">
+            Building AETHER: a fluid simulation that turns pointer movement into light, momentum,
+            and sound.
+          </p>
+          <a class="project-link" href="../projects/aether/" target="_blank" rel="noreferrer">
+            Launch Aether ↗
+          </a>
+        </div>
+      </header>
+
+      <div class="article-layout">
+        <nav class="toc" aria-label="Article contents">
+          <span>Contents</span>
+          <a href="#gpu">01 / Why the GPU</a>
+          <a href="#pipeline">02 / The pipeline</a>
+          <a href="#advection">03 / Advection</a>
+          <a href="#projection">04 / Projection</a>
+          <a href="#memory">05 / Simulation memory</a>
+          <a href="#gesture">06 / Gesture as force</a>
+          <a href="#payoff">07 / The payoff</a>
+        </nav>
+
+        <article class="prose">
+          <p class="lead">
+            AETHER began with a simple question: could a cursor leave behind something that felt
+            less like a trail and more like a material?
+          </p>
+
+          <p>
+            I did not want another particle system made from circles politely following the
+            pointer. I wanted the screen to behave like a continuous field—something with pressure,
+            turbulence, momentum, and memory. That meant borrowing a small, practical slice of
+            computational fluid dynamics.
+          </p>
+
+          <section id="gpu">
+            <h2>Why this belongs on the GPU</h2>
+            <p>
+              A fluid grid becomes expensive almost immediately. A 512 × 512 simulation contains
+              262,144 cells. Every frame, each cell samples several neighbours while transporting
+              velocity, calculating divergence, solving pressure, and moving density. Repeat the
+              pressure solve twenty times and the browser is already doing millions of related
+              operations.
+            </p>
+            <p>
+              JavaScript executes most of that work sequentially. A GPU is built to run the same
+              operation across thousands of values simultaneously. A fragment shader normally
+              decides the colour of a pixel; in AETHER, each fragment represents one cell in a
+              numerical field.
+            </p>
+            <div class="callout">
+              <p>
+                The display is an image. The simulation is also an image—except its channels contain
+                velocity, pressure, and density instead of red, green, and blue.
+              </p>
+            </div>
+            <p>
+              Each simulation step is a fullscreen draw call. The output texture from one shader
+              becomes the input for the next. At the end, a final shader interprets the density
+              field as colour.
+            </p>
+          </section>
+
+          <section id="pipeline">
+            <h2>Turning the equation into passes</h2>
+            <p>The incompressible Navier–Stokes equations can be written as:</p>
+            <div class="equation">
+              ∂u/∂t + (u · ∇)u = −∇p + ν∇²u + f<br />
+              ∇ · u = 0
+            </div>
+            <p>
+              Here, <em>u</em> is velocity, <em>p</em> is pressure, <em>ν</em> is viscosity, and
+              <em>f</em> represents an external force—such as a pointer moving through the field.
+              The compact notation hides several distinct jobs, so I split the simulation into
+              discrete rendering passes:
+            </p>
+            <ol>
+              <li>Inject pointer velocity and colour density.</li>
+              <li>Advect the velocity field.</li>
+              <li>Diffuse velocity where viscosity is required.</li>
+              <li>Measure divergence.</li>
+              <li>Iteratively solve for pressure.</li>
+              <li>Subtract the pressure gradient from velocity.</li>
+              <li>Advect density through the corrected velocity field.</li>
+              <li>Render the resulting field to the screen.</li>
+            </ol>
+            <p>
+              This follows Jos Stam’s “stable fluids” approach: it favours stability and
+              interactivity over physically exact turbulence. For an instrument running inside a
+              portfolio, that is the correct trade.
+            </p>
+          </section>
+
+          <section id="advection">
+            <h2>Advection: tracing every cell backwards</h2>
+            <p>
+              Advection asks where the material currently occupying a cell came from. Pushing values
+              forward creates gaps and race conditions, so the shader traces each fragment backwards
+              through the velocity field and samples the source there.
+            </p>
+            <pre><code>precision highp float;
+
+uniform sampler2D uVelocity;
+uniform sampler2D uSource;
+uniform vec2 uTexelSize;
+uniform float uDeltaTime;
+uniform float uDissipation;
+
+varying vec2 vUv;
+
+void main() {
+  vec2 velocity = texture2D(uVelocity, vUv).xy;
+  vec2 previousPosition =
+    vUv - velocity * uTexelSize * uDeltaTime;
+
+  vec4 transported =
+    texture2D(uSource, previousPosition);
+
+  gl_FragColor = transported * uDissipation;
+}</code></pre>
+            <p>
+              This semi-Lagrangian method remains stable when the frame time shifts slightly. It
+              does lose energy, but the loss is useful here: the visual field gradually settles
+              instead of accumulating motion forever.
+            </p>
+          </section>
+
+          <section id="projection">
+            <h2>Projection: removing artificial compression</h2>
+            <p>
+              After forces and advection, parts of the velocity field may expand or contract. An
+              incompressible fluid should not spontaneously create or destroy volume. I first
+              calculate divergence by comparing opposite neighbours:
+            </p>
+            <pre><code>float left   = sampleVelocity(-1.0,  0.0).x;
+float right  = sampleVelocity( 1.0,  0.0).x;
+float bottom = sampleVelocity( 0.0, -1.0).y;
+float top    = sampleVelocity( 0.0,  1.0).y;
+
+float divergence =
+  0.5 * ((right - left) + (top - bottom));
+
+gl_FragColor = vec4(divergence, 0.0, 0.0, 1.0);</code></pre>
+            <p>
+              Divergence identifies the cells where velocity is flowing inward or outward. The next
+              shader approximates the pressure required to cancel it. A Jacobi iteration samples
+              the four neighbouring pressure values:
+            </p>
+            <pre><code>float pL = samplePressure(-1.0,  0.0);
+float pR = samplePressure( 1.0,  0.0);
+float pB = samplePressure( 0.0, -1.0);
+float pT = samplePressure( 0.0,  1.0);
+
+float divergence = texture2D(uDivergence, vUv).x;
+float pressure = (pL + pR + pB + pT - divergence) * 0.25;
+
+gl_FragColor = vec4(pressure, 0.0, 0.0, 1.0);</code></pre>
+            <p>
+              One pass is only a rough estimate. Repeating it between fifteen and forty times lets
+              pressure propagate across the grid. Finally, subtracting the pressure gradient from
+              velocity leaves a near-divergence-free field. That projection step creates the rolling
+              curls that make AETHER feel fluid rather than merely blurred.
+            </p>
+          </section>
+
+          <section id="memory">
+            <h2>Textures as simulation memory</h2>
+            <p>
+              A shader cannot safely read from and write to the same texture during one pass. Every
+              field therefore owns two textures and two framebuffers—a pattern usually called
+              ping-pong rendering.
+            </p>
+            <pre><code>class DoubleBuffer {
+  constructor(read, write) {
+    this.read = read;
+    this.write = write;
+  }
+
+  swap() {
+    [this.read, this.write] = [this.write, this.read];
+  }
+}
+
+renderPass({
+  program: advectionProgram,
+  input: velocity.read.texture,
+  target: velocity.write.framebuffer
+});
+
+velocity.swap();</code></pre>
+            <p>
+              In WebGL2, velocity can live in an <code>RG16F</code> texture, density in
+              <code>RGBA16F</code>, and pressure and divergence in <code>R16F</code>. Floating-point
+              storage matters because these fields require signed values and more precision than an
+              ordinary eight-bit colour texture provides.
+            </p>
+            <p>
+              Simulation resolution is the strongest performance lever. The canvas may be 1800
+              pixels wide while the fluid grid is only 512. Bilinear filtering hides much of the
+              difference while saving millions of texture reads per second.
+            </p>
+          </section>
+
+          <section id="gesture">
+            <h2>Turning gesture into force</h2>
+            <p>
+              Pointer movement arrives in CSS pixels, while the fluid lives in normalized texture
+              coordinates. I calculate a velocity vector from consecutive events, normalize the
+              position, and inject a radial “splat” into the velocity and density buffers.
+            </p>
+            <pre><code>const dx = pointer.x - pointer.previousX;
+const dy = pointer.y - pointer.previousY;
+const speed = Math.hypot(dx, dy);
+
+splat({
+  position: [
+    pointer.x / width,
+    1 - pointer.y / height
+  ],
+  velocity: [
+    dx * forceScale,
+    -dy * forceScale
+  ],
+  radius: baseRadius + speed * radiusScale
+});</code></pre>
+            <p>
+              Slow movement creates controlled ribbons. Fast movement injects more momentum and
+              generates turbulence. If every event applied the same force, the interaction would
+              feel binary; mapping force to speed gives the gesture weight.
+            </p>
+          </section>
+
+          <section id="payoff">
+            <h2>The mathematical chaos is the interface</h2>
+            <p>
+              Visitors do not need to know that AETHER contains a pressure solver. The value of the
+              mathematics is the continuity it creates between intention and response.
+            </p>
+            <p>
+              Move slowly and the field stretches. Accelerate and it folds. Stop and the fluid keeps
+              travelling before gradually losing energy. The interface does not merely acknowledge
+              input; it interprets it.
+            </p>
+            <p>
+              A conventional animation plays a result decided in advance. A simulation creates a
+              space of possible results. I define the laws, palette, dissipation, scale, and
+              boundaries. The visitor composes the final image through movement.
+            </p>
+            <div class="callout">
+              <p>The chaos is genuine. The frame around it is designed.</p>
+            </div>
+          </section>
+        </article>
+      </div>
+    </main>
+
+    <a class="article-next" href="rigid-body-interfaces.html">
+      <span>Next field note / Process 02</span>
+      <strong>Designing tactile interfaces with rigid-body physics →</strong>
+    </a>
+  </body>
+</html>

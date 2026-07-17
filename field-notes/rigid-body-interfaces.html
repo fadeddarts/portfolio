@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="How KINETIC TYPE maps browser typography to a tactile rigid-body simulation."
+    />
+    <title>Designing Tactile Interfaces with Rigid-Body Physics — Harpuneet Singh</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="progress" aria-hidden="true"></div>
+    <header class="site-header">
+      <a class="site-header__brand" href="../index.html">HS®</a>
+      <span>Field Notes / 02</span>
+      <a class="site-header__back" href="../index.html#field-notes">Back to portfolio ↙</a>
+    </header>
+
+    <main>
+      <header class="article-hero">
+        <div class="article-hero__meta">
+          <span>Process / Interaction / 10 min</span>
+          <span>Published 2026</span>
+        </div>
+        <h1>Designing tactile interfaces with rigid-body physics</h1>
+        <div class="article-hero__footer">
+          <p class="article-hero__dek">
+            Building KINETIC TYPE: when typography stops behaving like decoration and starts
+            behaving like matter.
+          </p>
+          <a class="project-link" href="../projects/kinetic-type/" target="_blank" rel="noreferrer">
+            Launch Kinetic Type ↗
+          </a>
+        </div>
+      </header>
+
+      <div class="article-layout">
+        <nav class="toc" aria-label="Article contents">
+          <span>Contents</span>
+          <a href="#beyond">01 / Beyond easing</a>
+          <a href="#bodies">02 / Glyphs as bodies</a>
+          <a href="#step">03 / Simulation time</a>
+          <a href="#shatter">04 / Shattering</a>
+          <a href="#reform">05 / Reforming</a>
+          <a href="#collisions">06 / Collisions</a>
+          <a href="#tuning">07 / Designing weight</a>
+          <a href="#language">08 / Physics as language</a>
+        </nav>
+
+        <article class="prose">
+          <p class="lead">
+            Most interface animation describes a journey between two known values. Physics begins
+            with a state, applies forces, and lets the destination emerge.
+          </p>
+
+          <section id="beyond">
+            <h2>Moving beyond duration and easing</h2>
+            <p>
+              A CSS transition is an excellent tool when an element needs to move from one known
+              state to another. The browser interpolates the values for a fixed duration and stops.
+            </p>
+            <pre><code>.card {
+  transform: translateY(20px);
+  transition: transform 400ms ease;
+}</code></pre>
+            <p>
+              But the model has no natural concept of momentum. Two transitioning elements cannot
+              collide. If a visitor grabs something halfway through, its apparent velocity is not
+              part of the state.
+            </p>
+            <p>
+              KINETIC TYPE needed continuity. Letters had to carry velocity after being released,
+              rotate when struck off-centre, bounce against the viewport, push each other apart,
+              and still remember where the word belonged.
+            </p>
+          </section>
+
+          <section id="bodies">
+            <h2>Mapping HTML glyphs to physical bodies</h2>
+            <p>
+              The visible glyphs remain ordinary HTML spans. This keeps browser-quality font
+              rendering and preserves the option to expose meaningful text to assistive technology.
+              A separate JavaScript object holds each letter’s physical state.
+            </p>
+            <pre><code>const body = {
+  element,
+  position: { x, y },
+  velocity: { x: 0, y: 0 },
+  angle: 0,
+  angularVelocity: 0,
+  radius: glyphSize * 0.31,
+  mass: 1,
+  anchor: { x: baselineX, y: baselineY }
+};</code></pre>
+            <p>
+              The solver knows nothing about typography. It only sees a body with position, mass,
+              velocity, rotation, and a collision radius. During rendering, that state becomes a
+              GPU-composited transform:
+            </p>
+            <pre><code>body.element.style.transform = `
+  translate3d(
+    ${body.position.x}px,
+    ${body.position.y}px,
+    0
+  )
+  rotate(${body.angle}rad)
+`;</code></pre>
+            <p>
+              I use circular collision bounds rather than attempting to trace each glyph outline.
+              The approximation is cheaper, stable, and visually forgiving. Perceptual credibility
+              matters more here than typographic collision precision.
+            </p>
+          </section>
+
+          <section id="step">
+            <h2>Keeping simulation time stable</h2>
+            <p>
+              Physics becomes unpredictable when a dropped frame suddenly creates a huge time step.
+              At minimum, elapsed time needs to be measured and clamped:
+            </p>
+            <pre><code>let previousTime = performance.now();
+
+function frame(now) {
+  const delta = Math.min(
+    (now - previousTime) / 1000,
+    1 / 30
+  );
+
+  previousTime = now;
+  updatePhysics(delta);
+  renderBodies();
+  requestAnimationFrame(frame);
+}</code></pre>
+            <p>
+              A larger system can accumulate elapsed time and execute several fixed
+              <code>1 / 60</code> updates before each render. For KINETIC TYPE, a clamped step keeps
+              the interaction stable while remaining simple enough to inspect and tune directly.
+            </p>
+          </section>
+
+          <section id="shatter">
+            <h2>Making the word shatter with intention</h2>
+            <p>
+              Scattering letters with completely random vectors produces noise, not impact. The
+              shatter needs a readable centre and directional rhythm, with randomness added only as
+              texture.
+            </p>
+            <pre><code>function shatter(bodies) {
+  const centre = (bodies.length - 1) * 0.5;
+
+  bodies.forEach((body, index) => {
+    const offset = index - centre;
+    const spread = offset * 1.4;
+    const power = 420 + Math.random() * 180;
+
+    body.velocity.x += Math.sin(spread) * power;
+    body.velocity.y -= Math.cos(spread) * power;
+    body.angularVelocity +=
+      (Math.random() - 0.5) * 8;
+  });
+}</code></pre>
+            <p>
+              Once the impulse has been applied, gravity and collisions take control. The animation
+              is not replaying a timeline. It is resolving the consequences of an event.
+            </p>
+          </section>
+
+          <section id="reform">
+            <h2>The harder problem: reforming the baseline</h2>
+            <p>
+              Every glyph retains an anchor representing its original place in the word. Reforming
+              applies a damped spring force rather than tweening the current transform back to zero.
+            </p>
+            <div class="equation">
+              F<sub>spring</sub> = −k(x − x<sub>anchor</sub>) − cv
+            </div>
+            <p>
+              The first term pulls the body toward its anchor. The second resists its current
+              velocity. In code:
+            </p>
+            <pre><code>function applyAnchorSpring(body, stiffness, damping) {
+  const dx = body.anchor.x - body.position.x;
+  const dy = body.anchor.y - body.position.y;
+
+  body.velocity.x += dx * stiffness;
+  body.velocity.y += dy * stiffness;
+
+  body.velocity.x *= damping;
+  body.velocity.y *= damping;
+
+  body.angularVelocity +=
+    -body.angle * stiffness * 0.6;
+
+  body.angularVelocity *= damping;
+}</code></pre>
+            <p>
+              A distant letter returns with more energy than one already near its target. A spinning
+              letter can cross the baseline, overshoot, and settle. The word reforms as one system
+              rather than seven identical transitions.
+            </p>
+            <div class="callout">
+              <p>
+                The interface remembers its composition, but it does not pretend the disturbance
+                never happened.
+              </p>
+            </div>
+          </section>
+
+          <section id="collisions">
+            <h2>Collision response without a heavyweight engine</h2>
+            <p>
+              Matter.js would be a reasonable choice for a larger scene. This experiment uses a
+              smaller custom impulse solver so the relationship between the numbers and the feel
+              remains visible.
+            </p>
+            <pre><code>const dx = b.x - a.x;
+const dy = b.y - a.y;
+const distance = Math.hypot(dx, dy) || 0.001;
+const overlap = a.radius + b.radius - distance;
+
+if (overlap &gt; 0) {
+  const nx = dx / distance;
+  const ny = dy / distance;
+
+  a.x -= nx * overlap * 0.5;
+  a.y -= ny * overlap * 0.5;
+  b.x += nx * overlap * 0.5;
+  b.y += ny * overlap * 0.5;
+
+  const relative =
+    (b.vx - a.vx) * nx +
+    (b.vy - a.vy) * ny;
+
+  if (relative &lt; 0) {
+    const impulse = -relative * restitution;
+    a.vx -= nx * impulse;
+    a.vy -= ny * impulse;
+    b.vx += nx * impulse;
+    b.vy += ny * impulse;
+  }
+}</code></pre>
+            <p>
+              Separating overlapping bodies prevents them from sinking into one another. Applying
+              an impulse along the collision normal changes their velocity. A small rotational
+              impulse makes off-centre impacts visible.
+            </p>
+          </section>
+
+          <section id="tuning">
+            <h2>Damping, friction, and the design of weight</h2>
+            <p>
+              Tiny numerical changes produce large emotional differences. These constants are not
+              merely engineering parameters; they form the material palette of the interaction.
+            </p>
+            <h3>Damping</h3>
+            <p>
+              High damping removes energy quickly and feels controlled or soft. Low damping permits
+              oscillation and feels elastic, nervous, or mechanical.
+            </p>
+            <h3>Friction</h3>
+            <p>
+              Friction determines how long a glyph slides after reaching the floor. High friction
+              feels rubberized and heavy. Low friction suggests polished metal or glass.
+            </p>
+            <h3>Restitution</h3>
+            <p>
+              Restitution defines how much velocity survives a collision. Zero feels dead; one
+              approaches a perfectly elastic bounce. Around <code>0.6</code> gives the letters
+              enough life without turning the composition into a pinball table.
+            </p>
+            <h3>Angular damping</h3>
+            <p>
+              Rotation carries a disproportionate amount of character. Too little damping makes
+              letters look weightless. Too much makes collisions feel fake because bodies translate
+              without reacting rotationally. The correct range also depends on the typeface.
+            </p>
+          </section>
+
+          <section id="language">
+            <h2>Physics as interface language</h2>
+            <p>
+              The point is not to make every interface bounce. Physics is useful when continuity
+              matters—when people drag, throw, stretch, collide with, or disturb something.
+            </p>
+            <p>
+              Consistent physical rules create trust. Once one letter reacts to the pointer, the
+              visitor forms an expectation about the next. They begin experimenting without needing
+              an instruction panel.
+            </p>
+            <p>
+              KINETIC TYPE is still typography. It has hierarchy, baseline, contrast, and rhythm.
+              Physics does not replace graphic design. It gives the design a temporary material
+              state.
+            </p>
+          </section>
+        </article>
+      </div>
+    </main>
+
+    <a class="article-next" href="procedural-audio-web.html">
+      <span>Next field note / Opinion 03</span>
+      <strong>The math behind procedural audio on the web →</strong>
+    </a>
+  </body>
+</html>

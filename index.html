@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Harpuneet Singh — independent front-end developer and creative technologist crafting expressive digital experiences."
+    />
+    <meta name="theme-color" content="#0b0b0b" />
+    <title>Harpuneet Singh — Creative Developer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="loader" aria-hidden="true">
+      <div class="loader__counter">000</div>
+      <div class="loader__line"><span></span></div>
+      <p>Loading experience</p>
+    </div>
+
+    <div class="cursor cursor--dot"></div>
+    <div class="cursor cursor--ring"><span>View</span></div>
+
+    <header class="site-header">
+      <a class="brand magnetic" href="#hero" aria-label="Harpuneet Singh home">HS®</a>
+      <div class="site-header__meta">
+        <span>Design + Code</span>
+        <span>Independent / Worldwide</span>
+      </div>
+      <button class="menu-toggle magnetic" type="button" aria-expanded="false">
+        <span>Menu</span><i></i>
+      </button>
+    </header>
+
+    <nav class="menu" aria-hidden="true">
+      <div class="menu__index">Index / 00—04</div>
+      <div class="menu__links">
+        <a href="#project-grid"><span>01</span>Work</a>
+        <a href="about.html"><span>02</span>About</a>
+        <a href="#field-notes"><span>03</span>Field Notes</a>
+        <a href="#contact"><span>04</span>Contact</a>
+      </div>
+      <p>Creative development · Interaction · Motion · Ideas</p>
+    </nav>
+
+    <main>
+      <!-- 01 — Hero -->
+      <section class="hero section--dark" id="hero" data-section="01">
+        <canvas id="webgl-canvas" aria-hidden="true"></canvas>
+        <div class="hero__noise"></div>
+        <div class="hero__eyebrow">
+          <span>Harpuneet Singh / Creative developer</span>
+          <span>Portfolio / 2026</span>
+        </div>
+        <div class="hero__title" aria-label="I shape digital things">
+          <div class="hero__line"><span>I&nbsp; SHAPE</span><sup>01</sup></div>
+          <div class="hero__line hero__line--offset"><span>DIGITAL</span></div>
+          <div class="hero__line"><span>THINGS</span><i>®</i></div>
+        </div>
+        <div class="hero__footer">
+          <p>I design and build expressive interfaces where clarity, motion, and technology meet.</p>
+          <a class="scroll-cue magnetic" href="#manifesto"><span>Scroll to explore</span><i>↓</i></a>
+        </div>
+      </section>
+
+      <!-- 02 — Manifesto -->
+      <section class="manifesto section--light" id="manifesto" data-section="02">
+        <div class="section-label">
+          <span>02 / Manifesto</span>
+          <span>A little about me</span>
+        </div>
+        <p class="manifesto__text">
+          I turn ideas into interfaces, interfaces into motion, and motion into meaning. I care
+          about the tiny decisions that make digital work feel clear, human, and alive.
+        </p>
+        <div class="manifesto__aside">
+          <span>(A)</span>
+          <p>Independent by choice.<br />Curious by nature.</p>
+          <a class="text-link magnetic" href="about.html">Read more <span>↗</span></a>
+        </div>
+      </section>
+
+      <!-- 03 — Deep dive / Aether -->
+      <section class="case-study case-study--atlas" id="work" data-section="03">
+        <div class="case-study__sticky">
+          <div class="case-study__backdrop">AETHER</div>
+          <div class="case-study__track">
+            <article class="project-intro">
+              <div class="project-intro__number">03</div>
+              <div>
+                <p class="kicker">Selected project / 01</p>
+                <h2>AETHER</h2>
+                <p class="project-intro__copy">
+                  A real-time WebGL fluid dynamics simulation coupled with a generative synthesizer.
+                  Translating chaotic Navier-Stokes velocity fields into harmonious synthesizer patches,
+                  turning user cursor movement into a tactile audio-visual instrument.
+                </p>
+                <a class="text-link magnetic" href="projects/aether/" target="_blank" rel="noreferrer">
+                  Launch Aether <span>↗</span>
+                </a>
+              </div>
+            </article>
+            <figure class="project-frame cursor-view" data-cursor="PLAY">
+              <iframe
+                class="project-embed"
+                src="projects/aether/?embed=1"
+                title="Interactive Aether fluid simulation preview"
+                loading="lazy"
+              ></iframe>
+              <figcaption>
+                <span>Role / WebGL Development · Web Audio Synthesis</span><span>Year / 2026</span>
+              </figcaption>
+            </figure>
+            <figure class="project-frame project-frame--portrait project-tech">
+              <div class="project-tech__content">
+                <span>System / 01</span>
+                <h3>FIELD<br />→ SIGNAL</h3>
+                <dl>
+                  <div><dt>Simulation</dt><dd>GPU fluid solver</dd></div>
+                  <div><dt>Sound</dt><dd>Web Audio synthesis</dd></div>
+                  <div><dt>Input</dt><dd>Cursor + touch</dd></div>
+                  <div><dt>Output</dt><dd>Motion + harmony</dd></div>
+                </dl>
+              </div>
+              <figcaption>
+                <span>Technical architecture</span><span>01 / 02</span>
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <!-- 04 — Deep dive / Kinetic Type -->
+      <section class="case-study case-study--reverse" data-section="04">
+        <div class="case-study__sticky">
+          <div class="case-study__backdrop">KINETIC</div>
+          <div class="case-study__track">
+            <article class="project-intro">
+              <div class="project-intro__number">04</div>
+              <div>
+                <p class="kicker">Selected project / 02</p>
+                <h2>KINETIC<br />TYPE</h2>
+                <p class="project-intro__copy">
+                  An interactive 3D typographic canvas where physical forces collide with raw syntax.
+                  Utilizing rigid-body physics to let users physically shatter, scatter, and reform words
+                  in real-time 3D space, demonstrating deep integration of math and motion.
+                </p>
+                <a class="text-link magnetic" href="projects/kinetic-type/" target="_blank" rel="noreferrer">
+                  Launch Kinetic Type <span>↗</span>
+                </a>
+              </div>
+            </article>
+            <figure class="project-frame project-frame--wide cursor-view" data-cursor="PLAY">
+              <iframe
+                class="project-embed"
+                src="projects/kinetic-type/?embed=1"
+                title="Interactive Kinetic Type physics preview"
+                loading="lazy"
+              ></iframe>
+              <figcaption>
+                <span>Role / 3D Physics · Interaction Design</span><span>Year / 2026</span>
+              </figcaption>
+            </figure>
+            <figure class="project-frame project-frame--square project-tech project-tech--light">
+              <div class="project-tech__content">
+                <span>System / 02</span>
+                <h3>TYPE<br />→ MATTER</h3>
+                <dl>
+                  <div><dt>Physics</dt><dd>Custom rigid bodies</dd></div>
+                  <div><dt>Forces</dt><dd>Drag + repel</dd></div>
+                  <div><dt>States</dt><dd>Shatter + reform</dd></div>
+                  <div><dt>Rendering</dt><dd>DOM + animation loop</dd></div>
+                </dl>
+              </div>
+              <figcaption>
+                <span>Technical architecture</span><span>02 / 02</span>
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <!-- 05 — Bento capabilities -->
+      <section class="capabilities section--light" id="services" data-section="05">
+        <div class="section-label">
+          <span>05 / Capabilities</span>
+          <span>One person, full process</span>
+        </div>
+        <div class="capabilities__heading">
+          <h2>THINK.<br />MAKE.<br /><em>MOVE.</em></h2>
+          <p>I move between thinking and making—from the first question to the final living pixel.</p>
+        </div>
+        <div class="bento">
+          <article class="bento__item bento__item--strategy">
+            <span class="bento__index">01</span>
+            <div class="bento__orb"></div>
+            <div>
+              <h3>Strategy</h3>
+              <p>Research, framing, systems thinking, creative direction.</p>
+            </div>
+          </article>
+          <article class="bento__item bento__item--identity">
+            <span class="bento__index">02</span>
+            <div class="bento__glyph">Aa</div>
+            <div>
+              <h3>Identity</h3>
+              <p>Visual languages that flex, scale, and stay remembered.</p>
+            </div>
+          </article>
+          <article class="bento__item bento__item--digital">
+            <span class="bento__index">03</span>
+            <div class="bento__ticker"><span>DIGITAL EXPERIENCES — DIGITAL EXPERIENCES — </span></div>
+            <div>
+              <h3>Digital</h3>
+              <p>Front-end systems, websites, and experimental interfaces.</p>
+            </div>
+          </article>
+          <article class="bento__item bento__item--motion">
+            <span class="bento__index">04</span>
+            <div class="bento__rings"><i></i><i></i><i></i></div>
+            <div>
+              <h3>Motion</h3>
+              <p>Interaction, 3D, prototypes, and kinetic systems.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 06 — Statement -->
+      <section class="statement section--blue" data-section="06">
+        <div class="statement__top">
+          <span>Make it clear.</span><span>Then make it impossible to ignore.</span>
+        </div>
+        <div class="statement__marquee" aria-hidden="true">
+          <div>
+            <span>PRECISION WITH PULSE</span><i>✳</i><span>PRECISION WITH PULSE</span><i>✳</i>
+          </div>
+        </div>
+        <div class="statement__bottom">
+          <span>06 / Principle</span>
+          <span>Clarity is not the absence of complexity.<br />It is complexity, resolved.</span>
+        </div>
+      </section>
+
+      <!-- 07 — Project grid -->
+      <section class="project-grid section--light" id="project-grid" data-section="07">
+        <div class="section-label">
+          <span>07 / Selected work</span>
+          <span>Personal archive / Updating</span>
+        </div>
+        <div class="project-grid__list">
+          <a
+            class="project-card project-card--large cursor-view"
+            data-cursor="PLAY"
+            href="projects/synapse/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <div class="project-card__image">
+              <iframe
+                src="projects/synapse/?embed=1"
+                title="Synapse generative neural mesh preview"
+                loading="lazy"
+                tabindex="-1"
+              ></iframe>
+              <span class="project-card__arrow">↗</span>
+            </div>
+            <div class="project-card__meta">
+              <h3>SYNAPSE</h3><span>Generative Neural Mesh &amp; Audio Reactivity · 2026</span>
+            </div>
+          </a>
+          <a
+            class="project-card project-card--small cursor-view"
+            data-cursor="VIEW"
+            href="projects/chronos/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <div class="project-card__image">
+              <iframe
+                src="projects/chronos/?embed=1"
+                title="Chronos spatial timepiece preview"
+                loading="lazy"
+                tabindex="-1"
+              ></iframe>
+              <span class="project-card__arrow">↗</span>
+            </div>
+            <div class="project-card__meta">
+              <h3>CHRONOS</h3><span>Spatial Timepiece &amp; Kinetic Geometry · 2026</span>
+            </div>
+          </a>
+          <a
+            class="project-card project-card--small cursor-view"
+            data-cursor="VIEW"
+            href="projects/blender-art-lab/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <div class="project-card__image">
+              <iframe
+                src="projects/blender-art-lab/?embed=1"
+                title="Blender Art Lab procedural sculpture preview"
+                loading="lazy"
+                tabindex="-1"
+              ></iframe>
+              <span class="project-card__arrow">↗</span>
+            </div>
+            <div class="project-card__meta">
+              <h3>BLENDER ART LAB</h3><span>3D Asset Design &amp; Material Shaders · 2025</span>
+            </div>
+          </a>
+          <a
+            class="project-card project-card--large cursor-view"
+            data-cursor="PLAY"
+            href="projects/minimalist-raycaster/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <div class="project-card__image">
+              <iframe
+                src="projects/minimalist-raycaster/?embed=1"
+                title="Minimalist Raycaster game preview"
+                loading="lazy"
+                tabindex="-1"
+              ></iframe>
+              <span class="project-card__arrow">↗</span>
+            </div>
+            <div class="project-card__meta">
+              <h3>MINIMALIST RAYCASTER</h3><span>Pure JS Custom 3D Engine · 2025</span>
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <!-- 08 — Process -->
+      <section class="process section--dark" data-section="08">
+        <div class="section-label">
+          <span>08 / Process</span>
+          <span>How I work</span>
+        </div>
+        <div class="process__title"><span>NO BLACK</span><span>BOXES.</span></div>
+        <div class="process__steps">
+          <article><span>01</span><h3>Question</h3><p>Find the tension worth solving.</p></article>
+          <article><span>02</span><h3>Distill</h3><p>Turn complexity into a clear idea.</p></article>
+          <article><span>03</span><h3>Prototype</h3><p>Make it real, early and often.</p></article>
+          <article><span>04</span><h3>Release</h3><p>Ship, learn, and keep moving.</p></article>
+        </div>
+      </section>
+
+      <!-- 09 — Metrics -->
+      <section class="metrics section--light" data-section="09">
+        <div class="section-label">
+          <span>09 / In numbers</span>
+          <span>An independent practice</span>
+        </div>
+        <div class="metrics__grid">
+          <div class="metric"><strong data-count="1">0</strong><span>Independent maker</span></div>
+          <div class="metric"><strong data-count="4">0</strong><span>Core disciplines</span></div>
+          <div class="metric"><strong data-count="100">0</strong><span>Percent hands-on</span></div>
+          <div class="metric metric--accent"><strong>∞</strong><span>Curiosity</span></div>
+        </div>
+      </section>
+
+      <!-- 10 — Working principles -->
+      <section class="recognition section--light" data-section="10">
+        <div class="section-label">
+          <span>10 / Working principles</span>
+          <span>What guides the work</span>
+        </div>
+        <div class="recognition__rows">
+          <div><span>01 / Clarity</span><span>Make the complex feel inevitable</span><span>Always</span></div>
+          <div><span>02 / Character</span><span>Give every interaction a point of view</span><span>Essential</span></div>
+          <div><span>03 / Craft</span><span>Sweat the details people can feel</span><span>Hands-on</span></div>
+          <div><span>04 / Curiosity</span><span>Prototype beyond the obvious answer</span><span>Ongoing</span></div>
+        </div>
+      </section>
+
+      <!-- 11 — Journal -->
+      <section class="journal section--light" id="field-notes" data-section="11">
+        <div class="section-label">
+          <span>11 / Field notes</span>
+          <a class="text-link magnetic" href="field-notes/">View all <span>↗</span></a>
+        </div>
+        <div class="journal__grid">
+          <article>
+            <a class="journal__link" href="field-notes/navier-stokes-fragment-shader.html">
+              <div class="journal__visual journal__visual--one"><span>01</span></div>
+              <p>Essay / 12 min</p><h3>Solving Navier-Stokes equations in a fragment shader</h3>
+            </a>
+          </article>
+          <article>
+            <a class="journal__link" href="field-notes/rigid-body-interfaces.html">
+              <div class="journal__visual journal__visual--two"><i></i></div>
+              <p>Process / 10 min</p><h3>Designing tactile interfaces with rigid-body physics</h3>
+            </a>
+          </article>
+          <article>
+            <a class="journal__link" href="field-notes/procedural-audio-web.html">
+              <div class="journal__visual journal__visual--three"><span>Ab</span></div>
+              <p>Opinion / 11 min</p><h3>The math behind procedural audio on the web</h3>
+            </a>
+          </article>
+        </div>
+      </section>
+
+      <!-- 12 — Contact / pre-footer -->
+      <section class="contact section--blue" id="contact" data-section="12">
+        <div class="contact__top">
+          <span>12 / Say hello</span>
+          <span>Available for thoughtful collaborations<br />Independent / Worldwide</span>
+        </div>
+        <h2>HAVE AN IDEA<br />WITH A <em>PULSE?</em></h2>
+        <a class="contact__cta magnetic" href="mailto:hello@harpuneet.design">
+          <span>Tell me everything</span><i>↗</i>
+        </a>
+      </section>
+    </main>
+
+    <footer class="footer section--dark">
+      <div class="footer__top">
+        <a href="mailto:hello@harpuneet.design">hello@harpuneet.design</a>
+        <div><a href="#">Instagram</a><a href="#">LinkedIn</a><a href="#">Are.na</a></div>
+      </div>
+      <div class="footer__wordmark">HARPUNEET<sup>®</sup></div>
+      <div class="footer__bottom">
+        <span>© 2026 Harpuneet Singh</span>
+        <span>Independent / Available worldwide</span>
+        <a href="#hero">Back to top ↑</a>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

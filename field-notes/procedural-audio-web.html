@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Designing real-time procedural sound from cursor movement with the Web Audio API."
+    />
+    <title>The Math Behind Procedural Audio on the Web — Harpuneet Singh</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="progress" aria-hidden="true"></div>
+    <header class="site-header">
+      <a class="site-header__brand" href="../index.html">HS®</a>
+      <span>Field Notes / 03</span>
+      <a class="site-header__back" href="../index.html#field-notes">Back to portfolio ↙</a>
+    </header>
+
+    <main>
+      <header class="article-hero">
+        <div class="article-hero__meta">
+          <span>Opinion / Web Audio / 11 min</span>
+          <span>Published 2026</span>
+        </div>
+        <h1>The math behind procedural audio on the web</h1>
+        <div class="article-hero__footer">
+          <p class="article-hero__dek">
+            Why visual interactions become more tactile when sound is generated from the same
+            gesture—not pasted on afterwards.
+          </p>
+          <a class="project-link" href="../projects/aether/" target="_blank" rel="noreferrer">
+            Hear it in Aether ↗
+          </a>
+        </div>
+      </header>
+
+      <div class="article-layout">
+        <nav class="toc" aria-label="Article contents">
+          <span>Contents</span>
+          <a href="#files">01 / Beyond audio files</a>
+          <a href="#graph">02 / The synthesis graph</a>
+          <a href="#gesture">03 / Gesture as signal</a>
+          <a href="#pitch">04 / Pitch mapping</a>
+          <a href="#filter">05 / Spectral brightness</a>
+          <a href="#envelope">06 / Gain envelopes</a>
+          <a href="#restraint">07 / Designing silence</a>
+          <a href="#synesthesia">08 / Shared causality</a>
+        </nav>
+
+        <article class="prose">
+          <p class="lead">
+            A recording can react to a click. A synthesizer can react to the shape, speed, direction,
+            and duration of the gesture itself.
+          </p>
+
+          <section id="files">
+            <h2>Moving past static MP3 assets</h2>
+            <p>The easiest way to add sound to a website is to play a file:</p>
+            <pre><code>new Audio("/sounds/interaction.mp3").play();</code></pre>
+            <p>
+              For a notification, that may be exactly right. For a continuous instrument such as
+              AETHER, it becomes restrictive. A recording has a fixed pitch, duration, envelope,
+              and spectral character. It can be restarted or layered, but it cannot truly inherit
+              the geometry of a live gesture.
+            </p>
+            <p>
+              The Web Audio API provides oscillators, filters, gain stages, analysers, delays,
+              convolvers, and compressors as nodes in a signal graph. Instead of choosing which
+              sound file to play, the interface generates a sound whose parameters evolve alongside
+              its visuals.
+            </p>
+          </section>
+
+          <section id="graph">
+            <h2>Constructing the synthesis tree</h2>
+            <p>A simplified AETHER voice uses this path:</p>
+            <div class="equation">
+              Oscillator → Low-pass filter → Gain envelope → Compressor → Output
+            </div>
+            <pre><code>const context = new AudioContext();
+
+const oscillator = new OscillatorNode(context, {
+  type: "sine",
+  frequency: 110
+});
+
+const filter = new BiquadFilterNode(context, {
+  type: "lowpass",
+  frequency: 900,
+  Q: 4
+});
+
+const gain = new GainNode(context, {
+  gain: 0
+});
+
+const compressor = new DynamicsCompressorNode(context, {
+  threshold: -18,
+  knee: 12,
+  ratio: 5,
+  attack: 0.003,
+  release: 0.18
+});
+
+oscillator
+  .connect(filter)
+  .connect(gain)
+  .connect(compressor)
+  .connect(context.destination);
+
+oscillator.start();</code></pre>
+            <p>
+              The oscillator can run continuously while the gain envelope decides when it is
+              audible. The filter determines brightness. The compressor catches exceptional peaks,
+              but it is a safety layer—not a substitute for sensible gain staging.
+            </p>
+            <p>
+              Browsers require audio to begin after a deliberate user gesture. That restriction is
+              also good interface etiquette:
+            </p>
+            <pre><code>startButton.addEventListener("click", async () =&gt; {
+  await context.resume();
+});</code></pre>
+            <p>Sound should be invited, never smuggled into the page load.</p>
+          </section>
+
+          <section id="gesture">
+            <h2>Converting cursor movement into a signal</h2>
+            <p>
+              Consecutive pointer positions produce a velocity vector
+              <strong>v = (v<sub>x</sub>, v<sub>y</sub>)</strong>. Its magnitude describes speed:
+            </p>
+            <div class="equation">
+              |v| = √(v<sub>x</sub>² + v<sub>y</sub>²)<br />
+              θ = atan2(v<sub>y</sub>, v<sub>x</sub>)
+            </div>
+            <pre><code>const vx = pointer.x - previousPointer.x;
+const vy = pointer.y - previousPointer.y;
+
+const speed = Math.hypot(vx, vy);
+const direction = Math.atan2(vy, vx);</code></pre>
+            <p>
+              Raw pointer values are noisy and device-dependent. A trackpad can emit a different
+              cadence than a mouse or touchscreen, so I normalize and smooth the velocity before it
+              reaches the synthesis graph.
+            </p>
+            <pre><code>const normalizedSpeed = Math.min(speed / 60, 1);
+
+smoothedSpeed +=
+  (normalizedSpeed - smoothedSpeed) * 0.12;</code></pre>
+            <p>
+              This one-pole smoothing filter removes abrupt jumps without introducing enough latency
+              to disconnect sound from motion.
+            </p>
+          </section>
+
+          <section id="pitch">
+            <h2>Mapping velocity to perceived pitch</h2>
+            <p>
+              Human pitch perception is approximately logarithmic. Doubling a frequency raises it by
+              one octave, so a linear mapping from speed to hertz bunches most of the perceptual
+              change near the upper end.
+            </p>
+            <pre><code>const minimumFrequency = 82.41;
+const octaveRange = 3;
+
+const frequency =
+  minimumFrequency *
+  2 ** (smoothedSpeed * octaveRange);</code></pre>
+            <p>
+              This moves smoothly from roughly 82 Hz to 659 Hz. Direction can contribute a smaller
+              pitch displacement:
+            </p>
+            <pre><code>const directionalOffset =
+  Math.sin(direction) * 35;
+
+const targetFrequency =
+  frequency + directionalOffset;</code></pre>
+            <p>
+              Assigning that value directly would create discontinuities. Audio parameters should be
+              scheduled:
+            </p>
+            <pre><code>oscillator.frequency.setTargetAtTime(
+  targetFrequency,
+  context.currentTime,
+  0.025
+);</code></pre>
+            <p>
+              <code>setTargetAtTime()</code> produces a short exponential approach and prevents the
+              zipper-like artefacts caused by abrupt parameter updates.
+            </p>
+          </section>
+
+          <section id="filter">
+            <h2>Using speed to control spectral brightness</h2>
+            <p>
+              A low-pass filter removes frequencies above its cutoff. Opening that filter makes the
+              sound brighter and more exposed, which maps naturally to visual energy.
+            </p>
+            <pre><code>const minimumCutoff = 260;
+const maximumCutoff = 7200;
+
+const cutoff =
+  minimumCutoff *
+  (maximumCutoff / minimumCutoff)
+    ** smoothedSpeed;
+
+filter.frequency.setTargetAtTime(
+  cutoff,
+  context.currentTime,
+  0.035
+);</code></pre>
+            <p>
+              Slow movement produces a muted, rounded tone. Fast movement opens the filter and
+              exposes more harmonic energy. Cursor velocity now increases both fluid turbulence and
+              spectral brightness.
+            </p>
+            <div class="callout">
+              <p>
+                The visual and sonic systems do not need to describe each other. They need to share
+                a cause.
+              </p>
+            </div>
+          </section>
+
+          <section id="envelope">
+            <h2>ADSR envelopes without clicks or clipping</h2>
+            <p>
+              Rapid clicks and drags can create discontinuities in a waveform. Several voices can
+              also overlap above a safe amplitude. A gain envelope shapes each event through attack,
+              decay, sustain, and release.
+            </p>
+            <pre><code>function triggerEnvelope(gainNode, velocity = 1) {
+  const now = context.currentTime;
+  const peak = 0.18 * velocity;
+  const sustain = peak * 0.45;
+
+  gainNode.gain.cancelScheduledValues(now);
+  gainNode.gain.setValueAtTime(
+    gainNode.gain.value,
+    now
+  );
+
+  gainNode.gain.linearRampToValueAtTime(
+    peak,
+    now + 0.015
+  );
+
+  gainNode.gain.exponentialRampToValueAtTime(
+    Math.max(sustain, 0.0001),
+    now + 0.12
+  );
+}</code></pre>
+            <p>Releasing the gesture schedules a short fade:</p>
+            <pre><code>function releaseEnvelope(gainNode) {
+  const now = context.currentTime;
+
+  gainNode.gain.cancelScheduledValues(now);
+  gainNode.gain.setValueAtTime(
+    Math.max(gainNode.gain.value, 0.0001),
+    now
+  );
+
+  gainNode.gain.exponentialRampToValueAtTime(
+    0.0001,
+    now + 0.28
+  );
+}</code></pre>
+            <p>
+              Cancelling old schedules is essential. Otherwise, fast gestures leave behind a queue
+              of stale gain changes that continue after the interaction has moved elsewhere.
+              Exponential ramps cannot reach literal zero, hence the small positive floor.
+            </p>
+          </section>
+
+          <section id="restraint">
+            <h2>Sound needs negative space</h2>
+            <p>
+              Procedural audio creates an obvious temptation: sonify everything. The result is
+              usually fatigue rather than immersion.
+            </p>
+            <p>
+              I treat sound like visual contrast. Silence is negative space. A sustained tone has
+              weight. A short transient behaves like punctuation. Brightness indicates energy while
+              pitch can suggest height or direction.
+            </p>
+            <p>
+              The interface needs an immediate mute control, an honest active-state indicator, and
+              conservative gain levels. Reduced-motion preferences can also reduce aggressive
+              modulation, even though visual and auditory sensitivities are not identical.
+            </p>
+          </section>
+
+          <section id="synesthesia">
+            <h2>Synesthesia through shared causality</h2>
+            <p>
+              Synesthesia in browser design does not mean assigning arbitrary notes to colours. It
+              means connecting modalities through the same underlying variables.
+            </p>
+            <ul>
+              <li>Pointer speed affects fluid force and filter cutoff.</li>
+              <li>Vertical position influences colour placement and pitch.</li>
+              <li>Gesture duration shapes both fluid persistence and the gain envelope.</li>
+              <li>Dissipation informs the sonic release time.</li>
+            </ul>
+            <p>
+              The eye and ear receive different output, but both explain the same action. That
+              agreement makes the interaction tactile. The visitor is no longer moving a cursor
+              while background audio happens to play. They are performing an instrument whose body
+              is made from pixels.
+            </p>
+            <p>
+              Once movement has sound, timing becomes physical. Once sound follows velocity, a
+              gesture gains texture. When sight and hearing respond coherently, the experience
+              becomes much harder to forget.
+            </p>
+          </section>
+        </article>
+      </div>
+    </main>
+
+    <a class="article-next" href="navier-stokes-fragment-shader.html">
+      <span>Continue reading / Essay 01</span>
+      <strong>Solving Navier–Stokes equations in a fragment shader →</strong>
+    </a>
+  </body>
+</html>
