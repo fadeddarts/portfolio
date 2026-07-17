@@ -8,6 +8,7 @@ Each directory is an independent static application with its own HTML, CSS, and 
 - `chronos/`
 - `blender-art-lab/`
 - `minimalist-raycaster/`
+- `currents/`
 
 To publish one project separately, copy that directory into its own repository and enable GitHub
 Pages from the repository root. No build step or parent-site dependency is required.

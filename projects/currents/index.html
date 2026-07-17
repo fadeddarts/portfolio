@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="CURRENTS — an interactive WebGL study in motion, distortion, and sound."
+    />
+    <meta name="theme-color" content="#09070f" />
+    <title>CURRENTS — Interactive Wave Field</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="masthead">
+      <a class="wordmark" href="./">CURRENTS®</a>
+      <p>Interactive flow study<br />WebGL / 2026</p>
+      <span>Experiment 007</span>
+    </header>
+
+    <main>
+      <section class="stage" aria-label="Interactive wave distortion field">
+        <canvas id="currents" aria-label="A metallic sphere distorting animated contour waves"></canvas>
+
+        <div class="title-block" aria-hidden="true">
+          <span>Visual instrument / 07</span>
+          <h1>MOVE<br />THROUGH<br /><em>MATTER.</em></h1>
+        </div>
+
+        <p class="coordinate" id="coordinate" aria-hidden="true">X 050 / FLOW →</p>
+
+        <div class="transport" aria-label="Motion and audio controls">
+          <div class="direction-controls" role="group" aria-label="Sphere direction">
+            <button id="moveLeft" type="button" aria-label="Move sphere left">←</button>
+            <button id="pauseMotion" type="button" aria-pressed="false">Pause</button>
+            <button id="moveRight" type="button" class="active" aria-label="Move sphere right">→</button>
+          </div>
+          <button id="audioToggle" class="audio-toggle" type="button" aria-pressed="false">
+            <i></i><span>Play track</span>
+          </button>
+        </div>
+
+        <div class="scrubber">
+          <label for="position">Position</label>
+          <input id="position" type="range" min="0" max="1000" value="160" />
+          <output id="positionValue" for="position">016</output>
+        </div>
+
+        <p class="audio-status" id="audioStatus" role="status">
+          Add your licensed track at assets/currents-track.mp3
+        </p>
+      </section>
+
+      <aside class="project-note">
+        <span>Concept / 01</span>
+        <p>
+          A slow-moving body interrupts an otherwise ordered field. The sphere follows one fixed
+          path; the world around it carries the consequences.
+        </p>
+        <dl>
+          <div><dt>Field</dt><dd>Potential flow</dd></div>
+          <div><dt>Surface</dt><dd>Metallic SDF</dd></div>
+          <div><dt>Motion</dt><dd>Constant velocity</dd></div>
+          <div><dt>Sound</dt><dd>Licensed audio slot</dd></div>
+        </dl>
+      </aside>
+    </main>
+
+    <footer>
+      <span>Drag the sphere or use the transport</span>
+      <span>Harpuneet Singh / 2026</span>
+    </footer>
+
+    <audio id="track" loop preload="none">
+      <source src="./assets/currents-track.mp3" type="audio/mpeg" />
+    </audio>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="./script.js"></script>
+  </body>
+</html>
