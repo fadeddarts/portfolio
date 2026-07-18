@@ -17,8 +17,6 @@
 html {
   background: var(--ink);
   scroll-behavior: auto;
-  overflow-x: hidden;
-  overscroll-behavior-x: none;
 }
 
 body {
@@ -27,15 +25,12 @@ body {
   font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
   font-size: 14px;
   overflow-x: hidden;
-  overscroll-behavior-x: none;
   cursor: none;
 }
 
 main {
   position: relative;
   z-index: 1;
-  width: 100%;
-  max-width: 100%;
 }
 
 body.menu-open {
@@ -150,11 +145,19 @@ img.is-placeholder {
   height: 1.15rem;
 }
 
+.metric--accent strong {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  flex: 1;
+}
+
 .metric .icon-infinity {
-  display: block;
-  width: 0.9em;
-  height: 0.42em;
-  margin-top: 0.15em;
+  display: flex;
+  width: 1.05em;
+  height: 1.05em;
+  margin: 0;
 }
 
 .footer__bottom a {
@@ -548,7 +551,6 @@ img.is-placeholder {
   height: 300vh;
   background: #d8d8d8;
   color: var(--ink);
-  overflow: hidden;
 }
 
 .case-study--reverse {
@@ -886,9 +888,9 @@ img.is-placeholder {
 }
 
 .statement__marquee .icon-asterisk {
-  width: 0.38em;
-  height: 0.38em;
-  margin: 0 0.35em;
+  width: 0.9em;
+  height: 0.9em;
+  margin: 0 0.5em;
 }
 
 /* Project grid */
@@ -1248,7 +1250,6 @@ a.project-card {
   body,
   a,
   button { cursor: auto; }
-  body { touch-action: pan-y; }
   .cursor { display: none; }
   .manifesto__aside .text-link { gap: 1.25rem; }
   .site-header { grid-template-columns: 1fr 1fr; }

@@ -15,8 +15,6 @@
 
 html {
   scroll-behavior: smooth;
-  overflow-x: hidden;
-  overscroll-behavior-x: none;
 }
 
 body {
@@ -24,8 +22,6 @@ body {
   color: var(--ink);
   font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
   font-size: 16px;
-  overflow-x: hidden;
-  overscroll-behavior-x: none;
 }
 
 a {

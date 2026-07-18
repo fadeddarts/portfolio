@@ -1,0 +1,51 @@
+/* Lucide icons — sized wrappers; SVG injected by assets/icons.js */
+
+.icon-arrow,
+.icon-asterisk,
+.icon-target,
+.icon-reset,
+.icon-infinity {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  vertical-align: -0.14em;
+  line-height: 0;
+  color: inherit;
+}
+
+.icon-arrow svg,
+.icon-asterisk svg,
+.icon-target svg,
+.icon-reset svg,
+.icon-infinity svg,
+[data-lucide] svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  stroke: currentColor;
+  fill: none;
+}
+
+.icon-arrow {
+  width: 0.95em;
+  height: 0.95em;
+}
+
+.icon-asterisk {
+  width: 0.9em;
+  height: 0.9em;
+  margin: 0 0.4em;
+}
+
+.icon-target,
+.icon-reset {
+  width: 0.9em;
+  height: 0.9em;
+}
+
+.icon-infinity {
+  width: 1.35em;
+  height: 1.35em;
+}
