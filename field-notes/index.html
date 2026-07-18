@@ -14,6 +14,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="../assets/icons.css" />
     <link rel="stylesheet" href="styles.css" />
     <style>
       .notes-index { min-height: 100vh; padding: 3rem var(--pad) 8rem; }
@@ -22,7 +23,8 @@
       .notes-list { border-top: 1px solid var(--ink); }
       .notes-list a { display: grid; grid-template-columns: 4rem 1fr auto; gap: 2rem; align-items: start; padding: 2rem 0; border-bottom: 1px solid var(--ink); transition: padding .35s, background .35s, color .35s; }
       .notes-list a:hover { padding-right: 1rem; padding-left: 1rem; background: var(--blue); color: white; }
-      .notes-list span { font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; }
+      .notes-list span { display: inline-flex; align-items: center; gap: .4rem; font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; }
+      .notes-list .icon-arrow { width: .7em; height: .7em; }
       .notes-list strong { max-width: 18ch; font-size: clamp(1.8rem, 4vw, 4rem); letter-spacing: -.06em; line-height: .95; }
       @media (max-width: 700px) {
         .notes-index h1 { margin-top: 12vh; }
@@ -35,7 +37,7 @@
     <header class="site-header">
       <a class="site-header__brand" href="../index.html">HS®</a>
       <span>Writing / Ideas / Process</span>
-      <a class="site-header__back" href="../index.html#field-notes">Back to portfolio ↙</a>
+      <a class="site-header__back" href="../index.html#field-notes">Back to portfolio <span class="icon-arrow icon-arrow--sw" aria-hidden="true"></span></a>
     </header>
     <main class="notes-index">
       <div class="notes-index__meta">
@@ -47,17 +49,17 @@
         <a href="navier-stokes-fragment-shader.html">
           <span>01</span>
           <strong>Solving Navier–Stokes equations in a fragment shader</strong>
-          <span>Essay / 12 min ↗</span>
+          <span>Essay / 12 min <span class="icon-arrow" aria-hidden="true"></span></span>
         </a>
         <a href="rigid-body-interfaces.html">
           <span>02</span>
           <strong>Designing tactile interfaces with rigid-body physics</strong>
-          <span>Process / 10 min ↗</span>
+          <span>Process / 10 min <span class="icon-arrow" aria-hidden="true"></span></span>
         </a>
         <a href="procedural-audio-web.html">
           <span>03</span>
           <strong>The math behind procedural audio on the web</strong>
-          <span>Opinion / 11 min ↗</span>
+          <span>Opinion / 11 min <span class="icon-arrow" aria-hidden="true"></span></span>
         </a>
       </div>
     </main>

@@ -58,6 +58,8 @@
       smoothWheel: true,
       wheelMultiplier: 0.9,
       touchMultiplier: 1.2,
+      orientation: "vertical",
+      gestureOrientation: "vertical",
     });
 
     const raf = (time) => {
@@ -70,6 +72,16 @@
       lenis.on("scroll", ScrollTrigger.update);
     }
   }
+
+  // iOS can still rubber-band sideways past overflow-x:hidden. Snap back
+  // without changing vertical sticky/scrub scroll dynamics.
+  const lockHorizontalScroll = () => {
+    if (window.scrollX) window.scrollTo(0, window.scrollY);
+    if (document.documentElement.scrollLeft) document.documentElement.scrollLeft = 0;
+    if (document.body.scrollLeft) document.body.scrollLeft = 0;
+  };
+  window.addEventListener("scroll", lockHorizontalScroll, { passive: true });
+  window.addEventListener("resize", lockHorizontalScroll);
 
   document.querySelectorAll('a[href^="#"]').forEach((link) => {
     link.addEventListener("click", (event) => {

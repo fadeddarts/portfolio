@@ -17,6 +17,8 @@
 html {
   background: var(--ink);
   scroll-behavior: auto;
+  overflow-x: hidden;
+  overscroll-behavior-x: none;
 }
 
 body {
@@ -25,12 +27,15 @@ body {
   font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
   font-size: 14px;
   overflow-x: hidden;
+  overscroll-behavior-x: none;
   cursor: none;
 }
 
 main {
   position: relative;
   z-index: 1;
+  width: 100%;
+  max-width: 100%;
 }
 
 body.menu-open {
@@ -123,6 +128,51 @@ img.is-placeholder {
   padding-bottom: 0.5rem;
   border-bottom: 1px solid;
   font-weight: 600;
+}
+
+.scroll-cue .icon-arrow {
+  width: 0.85rem;
+  height: 0.85rem;
+}
+
+.project-card__arrow .icon-arrow {
+  width: 0.9rem;
+  height: 0.9rem;
+}
+
+.manifesto__aside .text-link .icon-arrow {
+  width: 0.85em;
+  height: 0.85em;
+}
+
+.contact__cta .icon-arrow {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+.metric .icon-infinity {
+  display: block;
+  width: 0.9em;
+  height: 0.42em;
+  margin-top: 0.15em;
+}
+
+.footer__bottom a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.footer__bottom .icon-arrow {
+  width: 0.75em;
+  height: 0.75em;
+}
+
+.project-tech__content h3 .icon-arrow {
+  width: 0.55em;
+  height: 0.55em;
+  margin-right: 0.15em;
+  vertical-align: 0.08em;
 }
 
 /* Loader */
@@ -498,6 +548,7 @@ img.is-placeholder {
   height: 300vh;
   background: #d8d8d8;
   color: var(--ink);
+  overflow: hidden;
 }
 
 .case-study--reverse {
@@ -831,9 +882,13 @@ img.is-placeholder {
 }
 
 .statement__marquee i {
-  margin: 0 0.4em;
-  font-size: 0.4em;
   font-style: normal;
+}
+
+.statement__marquee .icon-asterisk {
+  width: 0.38em;
+  height: 0.38em;
+  margin: 0 0.35em;
 }
 
 /* Project grid */
@@ -1193,7 +1248,9 @@ a.project-card {
   body,
   a,
   button { cursor: auto; }
+  body { touch-action: pan-y; }
   .cursor { display: none; }
+  .manifesto__aside .text-link { gap: 1.25rem; }
   .site-header { grid-template-columns: 1fr 1fr; }
   .site-header__meta { display: none; }
   .hero { min-height: 600px; }

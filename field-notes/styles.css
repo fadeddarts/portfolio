@@ -15,6 +15,8 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
+  overscroll-behavior-x: none;
 }
 
 body {
@@ -22,6 +24,8 @@ body {
   color: var(--ink);
   font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
   font-size: 16px;
+  overflow-x: hidden;
+  overscroll-behavior-x: none;
 }
 
 a {
@@ -71,8 +75,16 @@ a {
 }
 
 .site-header__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
   padding-bottom: 0.3rem;
   border-bottom: 1px solid;
+}
+
+.site-header__back .icon-arrow {
+  width: 0.75em;
+  height: 0.75em;
 }
 
 .article-hero {
@@ -115,6 +127,9 @@ a {
 }
 
 .project-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
   justify-self: end;
   padding-bottom: 0.5rem;
   border-bottom: 1px solid;
@@ -269,12 +284,20 @@ li code {
 }
 
 .article-next strong {
-  display: block;
-  max-width: 14ch;
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35em;
+  max-width: 16ch;
   margin-top: 2rem;
   font-size: clamp(2.5rem, 7vw, 7rem);
   letter-spacing: -0.07em;
   line-height: 0.9;
+}
+
+.article-next .icon-arrow {
+  width: 0.55em;
+  height: 0.55em;
 }
 
 .article-next:hover strong {

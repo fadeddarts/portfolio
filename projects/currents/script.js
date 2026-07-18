@@ -342,7 +342,7 @@
     slider.value = String(value);
     positionValue.textContent = String(value).padStart(3, "0");
     coordinate.textContent = `X ${String(Math.round(state.progress * 100)).padStart(3, "0")} / FLOW ${
-      state.direction > 0 ? "→" : "←"
+      state.direction > 0 ? ">" : "<"
     }`;
     leftButton.classList.toggle("active", state.direction < 0 && !state.paused);
     rightButton.classList.toggle("active", state.direction > 0 && !state.paused);

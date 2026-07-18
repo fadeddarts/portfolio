@@ -11,7 +11,7 @@
   <header class="masthead">
     <a href="./" class="brand" aria-label="Sector 05 home"><b>S/05</b><span>Spatial<br>Research</span></a>
     <p>PURE JS RAYCASTER<br>FIELD TEST — 2026</p>
-    <button id="restart-top" class="text-button" type="button">Restart mission ↗</button>
+    <button id="restart-top" class="text-button" type="button">Restart mission <span class="icon-arrow" aria-hidden="true"></span></button>
   </header>
 
   <main>
@@ -20,9 +20,9 @@
       <h1>RECOVER THE<br><em>COBALT</em> SIGNALS.</h1>
       <p class="lede">Navigate the archive. Collect all five signal nodes, then locate the white exit beacon. Distance determines light.</p>
       <div class="key-guide" aria-label="Keyboard controls">
-        <span><kbd>W</kbd><kbd>↑</kbd> Move</span>
+        <span><kbd>W</kbd><kbd>Up</kbd> Move</span>
         <span><kbd>A</kbd><kbd>D</kbd> Turn</span>
-        <span><kbd>S</kbd><kbd>↓</kbd> Reverse</span>
+        <span><kbd>S</kbd><kbd>Dn</kbd> Reverse</span>
       </div>
     </section>
 
@@ -35,12 +35,12 @@
       <div class="status" id="status" role="status">Find the cobalt signals</div>
 
       <div class="touch-controls" aria-label="Touch controls">
-        <button type="button" data-control="left" aria-label="Turn left">↙</button>
+        <button type="button" data-control="left" aria-label="Turn left"><span class="icon-arrow icon-arrow--sw" aria-hidden="true"></span></button>
         <div>
-          <button type="button" data-control="forward" aria-label="Move forward">↑</button>
-          <button type="button" data-control="backward" aria-label="Move backward">↓</button>
+          <button type="button" data-control="forward" aria-label="Move forward"><span class="icon-arrow icon-arrow--n" aria-hidden="true"></span></button>
+          <button type="button" data-control="backward" aria-label="Move backward"><span class="icon-arrow icon-arrow--s" aria-hidden="true"></span></button>
         </div>
-        <button type="button" data-control="right" aria-label="Turn right">↘</button>
+        <button type="button" data-control="right" aria-label="Turn right"><span class="icon-arrow icon-arrow--se" aria-hidden="true"></span></button>
       </div>
 
       <div class="end-panel" id="end-panel" hidden>
