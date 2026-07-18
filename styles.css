@@ -1079,6 +1079,32 @@ a.project-card {
   padding: 8rem var(--pad) 12rem;
 }
 
+.journal .section-label .text-link {
+  gap: 1.5rem;
+  padding: 0.85rem 1.1rem;
+  border: 1px solid var(--blue);
+  background: var(--blue);
+  color: var(--paper);
+  font-size: 0.8rem;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.journal .section-label .text-link:hover,
+.journal .section-label .text-link:focus-visible {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  outline: none;
+}
+
+.journal .section-label .text-link .icon-arrow {
+  width: 0.85em;
+  height: 0.85em;
+}
+
 .journal__grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
