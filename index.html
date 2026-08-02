@@ -40,14 +40,15 @@
     </header>
 
     <nav class="menu" aria-hidden="true">
-      <div class="menu__index">Index / 00—04</div>
+      <div class="menu__index">Index / 00—05</div>
       <div class="menu__links">
-        <a href="#project-grid"><span>01</span>Work</a>
-        <a href="about.html"><span>02</span>About</a>
-        <a href="#field-notes"><span>03</span>Field Notes</a>
-        <a href="#contact"><span>04</span>Contact</a>
+        <a href="#flagship"><span>01</span>Systems</a>
+        <a href="#project-grid"><span>02</span>Work</a>
+        <a href="about.html"><span>03</span>About</a>
+        <a href="#field-notes"><span>04</span>Field Notes</a>
+        <a href="#contact"><span>05</span>Contact</a>
       </div>
-      <p>Creative development · Interaction · Motion · Ideas</p>
+      <p>Creative development · Systems · Motion · Ideas</p>
     </nav>
 
     <main>
@@ -87,7 +88,72 @@
         </div>
       </section>
 
-      <!-- 03 — Deep dive / Aether -->
+      <!-- 03 — Flagship systems -->
+      <section class="flagship section--dark" id="flagship">
+        <div class="section-label">
+          <span>03 / Flagship systems</span>
+          <span>Open source · Co-op portfolio</span>
+        </div>
+        <div class="flagship__head">
+          <h2>ENGINEERING<br /><span class="flagship__accent">PROOF.</span></h2>
+          <p>
+            Production-style backend, retrieval, and security systems with measured benchmarks —
+            built for co-op applications, not tutorials.
+          </p>
+        </div>
+        <div class="flagship__rows">
+          <a
+            class="flagship__row cursor-view"
+            href="https://github.com/fadeddarts/forge"
+            target="_blank"
+            rel="noreferrer"
+            data-cursor="VIEW"
+          >
+            <span>01 / FORGE</span>
+            <div class="flagship__copy">
+              <strong>DAG Workflow Engine</strong>
+              <p>Concurrent orchestration with retries, dead-letter isolation, and Prometheus metrics.</p>
+              <span class="flagship__stack">Python · FastAPI · asyncio · Docker</span>
+            </div>
+            <span class="flagship__stat">7,000+<br />tasks/min</span>
+          </a>
+          <a
+            class="flagship__row cursor-view"
+            href="https://github.com/fadeddarts/atlas"
+            target="_blank"
+            rel="noreferrer"
+            data-cursor="VIEW"
+          >
+            <span>02 / ATLAS</span>
+            <div class="flagship__copy">
+              <strong>RAG Knowledge System + Eval Harness</strong>
+              <p>Hybrid BM25 + TF-IDF retrieval, cited answers, and a 54-question evaluation suite.</p>
+              <span class="flagship__stack">Python · FastAPI · BM25 · TF-IDF</span>
+            </div>
+            <span class="flagship__stat">47 / 54<br />eval passed</span>
+          </a>
+          <a
+            class="flagship__row cursor-view"
+            href="https://github.com/fadeddarts/aegis"
+            target="_blank"
+            rel="noreferrer"
+            data-cursor="VIEW"
+          >
+            <span>03 / AEGIS</span>
+            <div class="flagship__copy">
+              <strong>Fuzzing &amp; Vulnerability Harness</strong>
+              <p>Mutation fuzzing against lab C/Python parsers with crash triage and minimized PoCs.</p>
+              <span class="flagship__stack">Python · C · Docker</span>
+            </div>
+            <span class="flagship__stat">3 defect<br />classes</span>
+          </a>
+        </div>
+        <a class="text-link magnetic flagship__github" href="https://github.com/fadeddarts" target="_blank" rel="noreferrer">
+          github.com/fadeddarts <span class="icon-arrow" aria-hidden="true"></span>
+        </a>
+      </section>
+
+      <!-- 04 — Deep dive / Aether -->
       <section class="case-study case-study--atlas" id="work" data-section="03">
         <div class="case-study__sticky">
           <div class="case-study__backdrop">AETHER</div>
@@ -446,7 +512,10 @@
     <footer class="footer section--dark">
       <div class="footer__top">
         <a href="mailto:2005harpuneet@gmail.com">2005harpuneet@gmail.com</a>
-        <div><a href="https://www.linkedin.com/in/harpuneet-singh-9413b12b7/">LinkedIn</a></div>
+        <div>
+          <a href="https://github.com/fadeddarts">GitHub</a>
+          <a href="https://www.linkedin.com/in/harpuneet-singh-9413b12b7/">LinkedIn</a>
+        </div>
       </div>
       <div class="footer__wordmark">HARPUNEET<sup>®</sup></div>
       <div class="footer__bottom">

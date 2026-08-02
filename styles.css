@@ -1074,6 +1074,122 @@ a.project-card {
 .recognition__rows span:nth-child(2) { color: var(--grey); }
 .recognition__rows > div:hover span:nth-child(2) { color: inherit; }
 
+/* Flagship systems */
+.flagship {
+  padding: 8rem var(--pad) 10rem;
+}
+
+.flagship__head {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 3rem;
+  align-items: end;
+  margin-top: 7rem;
+}
+
+.flagship__head h2 {
+  font-size: clamp(3.5rem, 10vw, 9rem);
+  font-weight: 900;
+  letter-spacing: -0.08em;
+  line-height: 0.82;
+}
+
+.flagship__accent {
+  color: var(--blue);
+}
+
+.flagship__head p {
+  max-width: 28rem;
+  color: var(--grey);
+  font-size: 0.85rem;
+  line-height: 1.65;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.flagship__rows {
+  margin-top: 5rem;
+  border-top: 1px solid #555;
+}
+
+.flagship__row {
+  display: grid;
+  grid-template-columns: 8rem 1fr auto;
+  gap: 2rem;
+  align-items: start;
+  padding: 1.6rem 0;
+  border-bottom: 1px solid #555;
+  transition: padding 0.4s var(--ease), background 0.4s, color 0.4s;
+}
+
+.flagship__row > span:first-child {
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--grey);
+}
+
+.flagship__copy strong {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.flagship__copy p {
+  max-width: 36rem;
+  color: var(--grey);
+  font-size: 0.8rem;
+  line-height: 1.55;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.flagship__stack {
+  display: inline-block;
+  margin-top: 0.75rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #888;
+}
+
+.flagship__stat {
+  text-align: right;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.35;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.flagship__row:hover {
+  padding-right: 1rem;
+  padding-left: 1rem;
+  background: var(--blue);
+  color: var(--paper);
+}
+
+.flagship__row:hover .flagship__copy p,
+.flagship__row:hover .flagship__stack,
+.flagship__row:hover > span:first-child {
+  color: inherit;
+  opacity: 0.85;
+}
+
+.flagship__github {
+  margin-top: 3rem;
+  color: var(--paper);
+  border-color: #555;
+}
+
+.flagship__github:hover {
+  border-color: var(--blue);
+  background: var(--blue);
+}
+
 /* Journal */
 .journal {
   padding: 8rem var(--pad) 12rem;
@@ -1291,6 +1407,13 @@ a.project-card {
   .manifesto__text { max-width: 100%; font-size: 11vw; }
   .manifesto__aside { grid-template-columns: 1fr 2fr; gap: 2rem 0; margin-top: 6rem; }
   .manifesto__aside .text-link { grid-column: 2; justify-self: start; }
+  .flagship__head { grid-template-columns: 1fr; gap: 2rem; margin-top: 4rem; }
+  .flagship__head h2 { font-size: 18vw; }
+  .flagship__row {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  .flagship__stat { text-align: left; }
   .case-study { height: 240vh; }
   .case-study__track { gap: 14vw; padding-right: 12vw; padding-left: 8vw; }
   .project-intro { grid-template-columns: 2rem 1fr; width: 84vw; }

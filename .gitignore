@@ -2,3 +2,6 @@
 .DS_Store
 node_modules/
 *.log
+
+# Local job-search / resume materials (not for public site)
+private/
